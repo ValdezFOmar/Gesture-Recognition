@@ -1,5 +1,9 @@
 /.venv
+/.vscode
+
 /rps_data_sample
 /asl_alphabet_test
 /asl_alphabet_train
+
 /archive.zip
+/rps_data_sample.zip
