@@ -6,7 +6,7 @@ from mediapipe_model_maker import gesture_recognizer
 
 # ASL Sign Language Gestures
 DATASET_PATH = "asl_alphabet_train"
-MODEL_PATH = "models/asl_model"
+MODEL_PATH = "asl_model"
 
 def main():
     # Print labels
