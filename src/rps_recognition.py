@@ -26,7 +26,7 @@ train_data, res_data = data.split(0.8)
 validation_data, test_data = data.split(0.5)
 
 # Train the model
-hparams = gesture_recognizer.HParams(export_dir='models/export_model')
+hparams = gesture_recognizer.HParams(export_dir='models/rps_model')
 options = gesture_recognizer.GestureRecognizerOptions(hparams=hparams)
 model = gesture_recognizer.GestureRecognizer.create(
     train_data=train_data,
@@ -36,9 +36,9 @@ model = gesture_recognizer.GestureRecognizer.create(
 
 # Evaluate the model performance
 loss, acc = model.evaluate(test_data, batch_size=1)
-print('--------------------------------------')
+print('-----------------------------------------------------')
 print(f"Test loss:{loss}, Test accuracy:{acc}")
-print('--------------------------------------')
+print('-----------------------------------------------------')
 
 # Export to Tensorflow Lite Model
 model.export_model()

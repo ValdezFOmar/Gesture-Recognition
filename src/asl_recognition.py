@@ -6,7 +6,7 @@ from mediapipe_model_maker import gesture_recognizer
 
 # ASL Sign Language Gestures
 DATASET_PATH = "asl_alphabet_train"
-MODEL_PATH = "asl_model"
+MODEL_PATH = "models/asl_model"
 
 def main():
     # Print labels
@@ -16,19 +16,21 @@ def main():
         if os.path.isdir(os.path.join(DATASET_PATH, i)):
             labels.append(i)
     labels.sort()
-    print('--------------------------------------')
+    print('-----------------------------------------------------')
     print(labels)
-    print('--------------------------------------')
+    print('-----------------------------------------------------')
 
     # Load the dataset (2GB aprox.)
     data = gesture_recognizer.Dataset.from_folder(
         dirname=DATASET_PATH,
         hparams=gesture_recognizer.HandDataPreprocessingParams()
     )
-    train_data, validation_data = data.split(0.8)
+    train_data, res_data = data.split(0.8)
+    validation_data, test_data = res_data.split(0.5)
 
     # Train the model
-    hparams = gesture_recognizer.HParams(export_dir=MODEL_PATH)
+    # Adjust number of epochs
+    hparams = gesture_recognizer.HParams(export_dir=MODEL_PATH, epochs=500)
     options = gesture_recognizer.GestureRecognizerOptions(hparams=hparams)
     model = gesture_recognizer.GestureRecognizer.create(
         train_data=train_data,
@@ -36,9 +38,15 @@ def main():
         options=options
     )
 
+    # Test the trained model
+    loss, acc = model.evaluate(test_data, batch_size=1)
+    print('-----------------------------------------------------')
+    print(f"Test loss:{loss}, Test accuracy:{acc}")
+    print('-----------------------------------------------------')
+
     # Export to Tensorflow Lite Model
     model.export_model()
 
 # Script for training and exporting model
-if __name__ == 'main':
+if __name__ == '__main__':
     main()
