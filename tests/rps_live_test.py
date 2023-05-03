@@ -9,10 +9,21 @@ VisionRunningMode = mp.tasks.vision.RunningMode
 
 MODEL_PATH = 'models/rps_model/gesture_recognizer.task'
 
-# TODO: Print the label prediction.
+VALID_OUTPUTS = ['paper','rock','scissors']
+
+temp = ''
+
 # This callback is called whenever the task has finished processing a video frame
 def print_result(result: GestureRecognizerResult, output_image: mp.Image, timestamp_ms: int):
-    print(f'Gesture recognition result: ')
+    if not(len(result.gestures) > 0): return
+    category_name = result.gestures[0][0].category_name
+    
+    global temp
+    if category_name not in VALID_OUTPUTS or category_name == temp: return
+    temp = category_name
+    
+    score = result.gestures[0][0].score
+    print(f'Result: {category_name}         Score: {score:.2f}\n')
 
 # Create a gesture recognizer instance with the live stream mode:
 options = GestureRecognizerOptions(
@@ -35,7 +46,7 @@ with GestureRecognizer.create_from_options(options) as RECOGNIZER:
         # Show to screen
         cv2.imshow('OpenCV Feed', cv2.flip(frame, 1))
         
-        # Break gracefully
+        # Break and close camera feed
         if cv2.waitKey(10) & 0xFF == ord('q'):
             break
 
