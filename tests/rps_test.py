@@ -7,22 +7,19 @@ from mediapipe.tasks.python import vision
 from mediapipe.framework.formats import landmark_pb2
 from matplotlib import pyplot as plt
 
-# Script for testing the asl model
-
+# Script for testing the model
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-TESTDATA_PATH = "asl_alphabet_test"
-MODEL_PATH = "models/asl_model/gesture_recognizer.task"
+MODEL_PATH = 'models/rps_model/gesture_recognizer.task'
+TESTDATA_PATH = 'rps_test'
+SIGNS = ['none', 'paper', 'rock', 'scissors']
 
 # Create an GestureRecognizer object.
 BASE_OPTIONS = python.BaseOptions(model_asset_path=MODEL_PATH)
 OPTIONS = vision.GestureRecognizerOptions(base_options=BASE_OPTIONS)
 RECOGNIZER = vision.GestureRecognizer.create_from_options(OPTIONS)  # Loaded model
-
-SIGNS = ['A','B','C','D','F','G','H','I','J','K','L','M','N','O','P','Q',
-        'R','S','T','U','V','W','X','Y','Z','none','space']
 
 images = []
 results = []
