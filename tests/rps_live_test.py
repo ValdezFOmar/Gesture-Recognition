@@ -19,7 +19,7 @@ def print_result(result: GestureRecognizerResult, output_image: mp.Image, timest
     category_name = result.gestures[0][0].category_name
     
     global temp
-    if category_name not in VALID_OUTPUTS or category_name == temp: return
+    if category_name.lower() not in VALID_OUTPUTS or category_name == temp: return
     temp = category_name
     
     score = result.gestures[0][0].score
@@ -44,7 +44,7 @@ with GestureRecognizer.create_from_options(options) as RECOGNIZER:
         RECOGNIZER.recognize_async(mp_image, frame_timestamp_ms)
         
         # Show to screen
-        cv2.imshow('OpenCV Feed', cv2.flip(frame, 1))
+        cv2.imshow('Gesture-Recognizer: Rock, Paper, Scissors', cv2.flip(frame, 1))
         
         # Break and close camera feed
         if cv2.waitKey(10) & 0xFF == ord('q'):
